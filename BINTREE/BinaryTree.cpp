@@ -1,5 +1,5 @@
 //file BinaryTree.cpp
-//author Dr. Y
+//author Max Chehab
 //date February 13. 2018
 
 //Specification of ADT Binary Tree
@@ -13,7 +13,9 @@
 //     Operations: create, destroy, insert a new node,
 //                 traversals: preorder, inorder, postorder
 #include <iostream>
+#include <sstream>
 #include "BinaryTree.h"
+
 using namespace std;
 
 //creates an empty binary tree
@@ -126,5 +128,67 @@ void postorderHelper(TreeNode tree[], int myroot)
 void BinaryTree::postorder()
 {
     postorderHelper(binaryTree, root);
+    cout << endl;
+}
+
+//calculates Max Depth of tree using Post-Order traversal
+//pre TreeNode object exists
+//post returns max depth of tree.
+int calculateMaxDepth(TreeNode tree[], int myroot)
+{
+    if (myroot >= 0)
+    {
+        int leftDepth = calculateMaxDepth(tree, tree[myroot].getLeftChild());
+        int rightDepth = calculateMaxDepth(tree, tree[myroot].getRightChild());
+
+        if (leftDepth > rightDepth)
+            return (leftDepth + 1);
+        else
+            return (rightDepth + 1);
+    }
+    return 0;
+}
+
+// Print helper recursivly prints tree using Post-Order traversal
+// pre TreeNode exists, root is greater or equal to zero
+//      depth is zero, maxDepth represents the max depth of the tree
+//      lines exists
+// post lines is populated with print data.
+// note: I apologize, but I used a stringstream to achieve the specification
+//      noted in the assignment document. I found it impossible to keep both
+//      Items on the same line.
+void printHelper(TreeNode tree[], int myroot, int depth, int maxDepth, stringstream (&lines)[MAXITEMS])
+{
+    Item item;
+
+    if (myroot >= 0)
+    {
+        printHelper(tree, tree[myroot].getLeftChild(), depth + 1, maxDepth, lines);
+        printHelper(tree, tree[myroot].getRightChild(), depth + 1, maxDepth, lines);
+        tree[myroot].getItem(item);
+        for (int i = 0; i < maxDepth - depth; i++)
+        {
+            lines[depth] << "       ";
+        }
+        lines[depth] << item;
+        lines[depth].seekp(-1, std::ios_base::end); // Remove last character (end line)
+    }
+}
+
+// Performs print of tree
+// pre BinaryTree object must exist
+// post tree is printed to the cout
+void BinaryTree::print()
+{
+    int maxDepth = calculateMaxDepth(binaryTree, root);
+    stringstream lines[MAXITEMS];
+
+    printHelper(binaryTree, root, 0, maxDepth, lines);
+    cout << "A Tree of Height " << maxDepth << endl;
+    for (int i = 0; i < maxDepth; i++)
+    {
+        cout << endl
+             << lines[i].str();
+    }
     cout << endl;
 }

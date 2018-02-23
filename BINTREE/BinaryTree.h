@@ -60,6 +60,11 @@ public:
   //usage tree.postorder();
   void postorder();
 
+  // Performs print of tree
+  // pre BinaryTree object must exist
+  // post tree is printed to the cout
+  void print();
+
 private:
   int root;
   int numberOfItems;
