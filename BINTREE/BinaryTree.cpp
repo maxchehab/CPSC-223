@@ -8,7 +8,7 @@
 //                                  /    \
 //                                TL     TR
 //                  where TL and TR are binary trees
-//     Data Structure: YOU DO
+//     Data Structure: BinaryTree with an array.
 
 //     Operations: create, destroy, insert a new node,
 //                 traversals: preorder, inorder, postorder
@@ -29,7 +29,6 @@ BinaryTree::BinaryTree()
 //releases a binary tree
 //pre a BinaryTree object exists
 //post the BinaryTree object no longer exists
-
 BinaryTree::~BinaryTree()
 {
     root = -1;
@@ -52,7 +51,12 @@ void BinaryTree::insert(const Item &newItem, int left, int right)
     }
 }
 
-//recursive helper
+// Pre: tree and myroot exist
+// Post: if myroot is greater than or equal to 0 
+//		the treenode at the index of myroot is displayed
+//		and the function will recursivly call itself with 
+//		it's left and right children (int).
+// Usage: preorderHelper(binaryTree, root);
 void preorderHelper(TreeNode tree[], int myroot)
 {
     Item item;
@@ -79,7 +83,13 @@ void BinaryTree::preorder()
     cout << endl;
 }
 
-//recursive helper
+// Pre: tree and myroot exist
+// Post: if myroot is greater than or equal to 0 
+//		the function will recursivly call itself with 
+//		it's left child and then display the treenode
+//		at the index of myroot and finally recursivly
+//		call itself with it's right child 
+// Usage: inorderHelper(binaryTree, root);
 void inorderHelper(TreeNode tree[], int myroot)
 {
     Item item;
@@ -105,7 +115,12 @@ void BinaryTree::inorder()
     cout << endl;
 }
 
-//recursive helper
+// Pre: tree and myroot exist
+// Post: if myroot is greater than or equal to 0 
+//		the function will recursivly call itself with 
+//		it's left and right child and then display the
+// 		treenode at the index of myroot
+// Usage: postorderHelper(binaryTree, root);
 void postorderHelper(TreeNode tree[], int myroot)
 {
     Item item;
@@ -156,7 +171,9 @@ int calculateMaxDepth(TreeNode tree[], int myroot)
 // post lines is populated with print data.
 // note: I apologize, but I used a stringstream to achieve the specification
 //      noted in the assignment document. I found it impossible to keep both
-//      Items on the same line.
+//      Items on the same line. This could have been achieved without a
+//      stringstream by reading and writing the item to a temporary file but
+//      I found this to be the most efficient way.
 void printHelper(TreeNode tree[], int myroot, int depth, int maxDepth, stringstream (&lines)[MAXITEMS])
 {
     Item item;

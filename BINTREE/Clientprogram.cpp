@@ -15,12 +15,49 @@
 #include "TreeNode.h"
 
 using namespace std;
+
+// opens the Input.dat file
+// pre: Input.dat file exists
+// post: input file is opened OR program is exited
+// usage: openInputFile(infile);
 void openInputFile(ifstream &infile);
+
+// takes the input file and reads one tree node from the infile
+// pre: infile must be opened
+//		infile pointer is at the beginning of a line
+//		each item is on its own line
+//		the left and right indices are bellow each item
+//		ex:
+// 		1111111 Item 1
+// 		-1 -1
+// post: newItem will contain a new Item and left and right will contain
+//		their respective tree indices.
+// 		infiles pointer is after the newline following the 2nd line
+// usage: readOneTreeNode(inputFile, item, left, right);
 void readOneTreeNode(ifstream &infile, Item &newItem, int &left, int &right);
+
+// reads an entire tree
+// pre: infile is open
+//		the first line has the number of nodes to be read
+//		infile has next item on a line
+//		the next line are the two integers for the children
+//		Example:
+//		2
+// 		1111111 Item 1
+// 		-1 -1
+//	post: BinaryTree is populated with Items from infile
+// 		infiles pointer is after the newline following the
+//		last set of children
+//  usage: readTreeNodesAndInsert(infile, tree);
 void readTreeNodesAndInsert(ifstream &infile, BinaryTree &tree);
+
+// traverses and prints tree
+// pre: BinaryTree is populated and exists
+// post: In order, post order, and pre order
+//		traversals are displayed
+// usage: traverseAndPrintTree(tree);
 void traverseAndPrintTree(BinaryTree &tree);
 
-// Opens input file. Reads and traverses degenerate and normal tree
 int main()
 {
 	ifstream infile;
@@ -39,7 +76,11 @@ int main()
 	traverseAndPrintTree(degenerateTree);
 }
 
-// Traverses and prints a BinaryTree
+// traverses and prints tree
+// pre: BinaryTree is populated and exists
+// post: In order, post order, and pre order
+//		traversals are displayed
+// usage: traverseAndPrintTree(tree);
 void traverseAndPrintTree(BinaryTree &tree)
 {
 	tree.print();
@@ -53,7 +94,10 @@ void traverseAndPrintTree(BinaryTree &tree)
 	tree.postorder();
 }
 
-// Opens and input file
+// opens the Input.dat file
+// pre: Input.dat file exists
+// post: input file is opened OR program is exited
+// usage: openInputFile(infile);
 void openInputFile(ifstream &infile)
 {
 	infile.open("Input.dat");
@@ -64,7 +108,18 @@ void openInputFile(ifstream &infile)
 	}
 }
 
-// Reads a single tree node
+// takes the input file and reads one tree node from the infile
+// pre: infile must be opened
+//		infile pointer is at the beginning of a line
+//		each item is on its own line
+//		the left and right indices are bellow each item
+//		ex:
+// 		1111111 Item 1
+// 		-1 -1
+// post: newItem will contain a new Item and left and right will contain
+//		their respective tree indices.
+// 		infiles pointer is after the newline following the 2nd line
+// usage: readOneTreeNode(inputFile, item, left, right);
 void readOneTreeNode(ifstream &infile, Item &newItem, int &left, int &right)
 {
 	char newLine;
@@ -75,7 +130,19 @@ void readOneTreeNode(ifstream &infile, Item &newItem, int &left, int &right)
 	infile.get(newLine);
 }
 
-// Reads a single tree node and inserts into Binary Tree
+// reads an entire tree
+// pre: infile is open
+//		the first line has the number of nodes to be read
+//		infile has next item on a line
+//		the next line are the two integers for the children
+//		Example:
+//		2
+// 		1111111 Item 1
+// 		-1 -1
+//	post: BinaryTree is populated with Items from infile
+// 		infiles pointer is after the newline following the
+//		last set of children
+//  usage: readTreeNodesAndInsert(infile, tree);
 void readTreeNodesAndInsert(ifstream &infile, BinaryTree &tree)
 {
 	int numberOfNodes, left, right;
