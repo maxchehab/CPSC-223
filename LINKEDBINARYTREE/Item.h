@@ -52,7 +52,7 @@ public:
   //pre Item object phonePtr is filled
   //post Item object phonePtr[0] = '@'
   //usage if(aitem.setUsed())
-  bool setUsed();
+  void setUsed();
 
   //copies a name and phone number
   //pre rightHandSideItem has been assigned a name and phone number

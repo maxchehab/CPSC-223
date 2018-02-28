@@ -111,7 +111,7 @@ bool Item::isEmpty()
 //pre Item object phonePtr is filled
 //post Item object phonePtr[0] = '@'
 //usage if(aitem.setUsed())
-bool Item::setUsed()
+void Item::setUsed()
 {
     phonePtr[0] = '@';
 }

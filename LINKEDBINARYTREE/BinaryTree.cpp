@@ -9,6 +9,7 @@
 #include "BinaryTree.h"
 #include <iostream>
 using namespace std;
+
 void destroyTree(TreeNode *&treep);
 
 // ***************** recursive helpers *****************
@@ -58,18 +59,18 @@ void destroyTree(TreeNode *&treep)
 }
 
 // recursive helper for prettyDisplay. You do the doc
-void writePretty(TreeNode *treep, int level, char append)
+void writePretty(TreeNode *treep, int level, string append)
 {
     if (treep != nullptr)
     {
         level++;
-        writePretty(treep->leftChild, level, '/');
+        writePretty(treep->leftChild, level, "/");
         for (int i = 1; i < level; i++)
         {
             cout << "\t\t";
         }
         cout << append << treep->item;
-        writePretty(treep->rightChild, level, '\\');
+        writePretty(treep->rightChild, level, "\\");
     }
 }
 
@@ -103,8 +104,8 @@ void postorder(TreeNode *treep)
 {
     if (treep != nullptr)
     {
-        inorder(treep->leftChild);
-        inorder(treep->rightChild);
+        postorder(treep->leftChild);
+        postorder(treep->rightChild);
         cout << treep->item;
     }
 }
@@ -161,6 +162,7 @@ BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exc
 {
     root = nullptr;
     copyTree(root, rightHandSideTree.root);
+    return *this;
 }
 
 //prints the tree to look like a computer science tree
@@ -178,7 +180,7 @@ BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exc
 //usage: tree.prettyDisplay();
 void BinaryTree::prettyDisplay()
 {
-    writePretty(root, 0, ' ');
+    writePretty(root, 0, "root -> ");
 }
 
 // *************** on the following traversals
@@ -247,26 +249,26 @@ void BinaryTree::makeTreeTwo(istream &input) throw(Exception)
     root = new (nothrow) TreeNode(newguy, nullptr, nullptr);
     if (root == nullptr)
     {
-        throw Exception("makeTreeOne: no room in the heap");
+        throw Exception("makeTreeTwo: no room in the heap");
     }
 
     input >> newguy;
     TreeNode *child = new (nothrow) TreeNode(newguy, nullptr, nullptr);
     if (child == nullptr)
     {
-        throw Exception("makeTreeOne: no room in the heap");
+        throw Exception("makeTreeTwo: no room in the heap");
     }
 
     input >> newguy;
     root->leftChild = new (nothrow) TreeNode(newguy, child, nullptr);
     if (root->leftChild == nullptr)
     {
-        throw Exception("makeTreeOne: no room in the heap");
+        throw Exception("makeTreeTwo: no room in the heap");
     }
     input >> newguy;
     root->rightChild = new (nothrow) TreeNode(newguy, nullptr, nullptr);
     if (root->rightChild == nullptr)
     {
-        throw Exception("makeTreeOne: no room in the heap");
+        throw Exception("makeTreeTwo: no room in the heap");
     }
 }

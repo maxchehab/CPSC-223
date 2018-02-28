@@ -20,28 +20,60 @@ void OpenInputFile(ifstream &inputFile, string filename);
 //usage PrintExceptionMessage(except);
 void PrintExceptionMessage(const Exception &except);
 
+// traverses and prints tree
+// pre: BinaryTree is populated and exists
+// post: Binary tree is pretty displayed and in order, post order, and pre order
+//		traversals are displayed
+// usage: traverseAndPrintTree(tree);
+void traverseAndPrintTree(BinaryTree &tree);
+
 int main()
 {
-    BinaryTree myTree, otherTree;
+    BinaryTree fullTree, completeTree;
     ifstream infile;
 
     OpenInputFile(infile, "Input.dat");
 
     try
     {
-        myTree.makeTreeOne(infile);
-        // myTree.preorderTraverse();
-        otherTree.makeTreeTwo(infile);
-        // otherTree.preorderTraverse();
-        otherTree = myTree;
-        otherTree.prettyDisplay();
+        fullTree.makeTreeOne(infile);
+        completeTree.makeTreeTwo(infile);
     }
     catch (Exception except)
     {
         PrintExceptionMessage(except);
     }
 
+    cout << "Full tree: " << endl;
+    traverseAndPrintTree(fullTree);
+
+    cout << "Complete tree: " << endl;
+    traverseAndPrintTree(completeTree);
+
     return 0;
+}
+
+// traverses and prints tree
+// pre: BinaryTree is populated and exists
+// post: In order, post order, and pre order
+//		traversals are displayed
+// usage: traverseAndPrintTree(tree);
+void traverseAndPrintTree(BinaryTree &tree)
+{
+
+    tree.prettyDisplay();
+    cout << endl
+         << "Pre-Order Traversal: " << endl;
+    tree.preorderTraverse();
+
+    cout << endl
+         << "In-Order Traversal: " << endl;
+    tree.inorderTraverse();
+
+    cout << endl
+         << "Post-Order Traversal: " << endl;
+    tree.postorderTraverse();
+    cout << endl;
 }
 
 //opens an input file with a chosen name
