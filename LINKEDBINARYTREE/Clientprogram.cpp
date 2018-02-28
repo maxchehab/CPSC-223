@@ -1,5 +1,3 @@
-//clientguy
-
 #include "BinaryTree.h"
 #include "Exception.h"
 #include <string>

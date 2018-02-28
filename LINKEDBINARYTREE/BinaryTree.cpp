@@ -4,7 +4,9 @@
 
 //data object: a binary tree which is YOU DO
 //data structure: a linked binary tree
-//operations: YOU DO
+//operations: displayPretty, operator=, preorderTraversal,
+//             postorderTraversal,  inorderTraversal,
+//             makeTreeOne, makeTreeTwo
 
 #include "BinaryTree.h"
 #include <iostream>
