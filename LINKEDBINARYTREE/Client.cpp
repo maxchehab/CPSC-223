@@ -22,15 +22,19 @@ void PrintExceptionMessage(const Exception &except);
 
 int main()
 {
-    BinaryTree mytree, otherTree;
+    BinaryTree myTree, otherTree;
     ifstream infile;
 
     OpenInputFile(infile, "Input.dat");
 
     try
     {
-        mytree.makeTreeOne(infile);
-        mytree.preorderTraverse();
+        myTree.makeTreeOne(infile);
+        // myTree.preorderTraverse();
+        otherTree.makeTreeTwo(infile);
+        // otherTree.preorderTraverse();
+        otherTree = myTree;
+        otherTree.prettyDisplay();
     }
     catch (Exception except)
     {

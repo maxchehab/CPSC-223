@@ -1,6 +1,6 @@
 //file BinaryTree.cpp
-//author and
-//date
+//author Max Chehab and Kevin Shaw
+//date 2/28/2018
 
 //data object: a binary tree which is YOU DO
 //data structure: a linked binary tree
@@ -9,6 +9,7 @@
 #include "BinaryTree.h"
 #include <iostream>
 using namespace std;
+void destroyTree(TreeNode *&treep);
 
 // ***************** recursive helpers *****************
 
@@ -19,6 +20,25 @@ using namespace std;
 //usage: copyTree (newptr, oldptr);
 void copyTree(TreeNode *&newtreep, TreeNode *oldtreep) throw(Exception)
 {
+    if (newtreep != nullptr)
+    {
+        destroyTree(newtreep);
+    }
+    if (oldtreep == nullptr)
+    {
+        newtreep = nullptr;
+    }
+    else
+    {
+        //preorder traversals
+        newtreep = new (nothrow) TreeNode(oldtreep->item, nullptr, nullptr);
+        if (newtreep == nullptr)
+        {
+            throw Exception("operator=: no space in heap");
+        }
+        copyTree(newtreep->leftChild, oldtreep->leftChild);
+        copyTree(newtreep->rightChild, oldtreep->rightChild);
+    }
 }
 
 //Releases memory for a binary tree
@@ -28,11 +48,29 @@ void copyTree(TreeNode *&newtreep, TreeNode *oldtreep) throw(Exception)
 //usage: destroyTree (mroot);
 void destroyTree(TreeNode *&treep)
 {
+    if (treep != nullptr)
+    {
+        destroyTree(treep->leftChild);
+        destroyTree(treep->rightChild);
+        delete treep;
+        treep = nullptr;
+    }
 }
 
 // recursive helper for prettyDisplay. You do the doc
-void writePretty(TreeNode *treep, int level)
+void writePretty(TreeNode *treep, int level, char append)
 {
+    if (treep != nullptr)
+    {
+        level++;
+        writePretty(treep->leftChild, level, '/');
+        for (int i = 1; i < level; i++)
+        {
+            cout << "\t\t";
+        }
+        cout << append << treep->item;
+        writePretty(treep->rightChild, level, '\\');
+    }
 }
 
 // ********** recursive helpers for the traversals ****************
@@ -121,6 +159,8 @@ bool BinaryTree::isEmpty() const
 //usage: atree = btree = ctree;
 BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exception)
 {
+    root = nullptr;
+    copyTree(root, rightHandSideTree.root);
 }
 
 //prints the tree to look like a computer science tree
@@ -138,6 +178,7 @@ BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exc
 //usage: tree.prettyDisplay();
 void BinaryTree::prettyDisplay()
 {
+    writePretty(root, 0, ' ');
 }
 
 // *************** on the following traversals
@@ -200,4 +241,32 @@ void BinaryTree::makeTreeOne(istream &input) throw(Exception)
 //       heap to make the tree
 void BinaryTree::makeTreeTwo(istream &input) throw(Exception)
 {
+    Item newguy;
+
+    input >> newguy;
+    root = new (nothrow) TreeNode(newguy, nullptr, nullptr);
+    if (root == nullptr)
+    {
+        throw Exception("makeTreeOne: no room in the heap");
+    }
+
+    input >> newguy;
+    TreeNode *child = new (nothrow) TreeNode(newguy, nullptr, nullptr);
+    if (child == nullptr)
+    {
+        throw Exception("makeTreeOne: no room in the heap");
+    }
+
+    input >> newguy;
+    root->leftChild = new (nothrow) TreeNode(newguy, child, nullptr);
+    if (root->leftChild == nullptr)
+    {
+        throw Exception("makeTreeOne: no room in the heap");
+    }
+    input >> newguy;
+    root->rightChild = new (nothrow) TreeNode(newguy, nullptr, nullptr);
+    if (root->rightChild == nullptr)
+    {
+        throw Exception("makeTreeOne: no room in the heap");
+    }
 }
