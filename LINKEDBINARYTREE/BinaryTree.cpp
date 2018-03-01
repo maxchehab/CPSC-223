@@ -2,7 +2,8 @@
 //author Max Chehab and Kevin Shaw
 //date 2/28/2018
 
-//data object: a binary tree which is YOU DO
+// Specification of ADT Item
+//data object: a binary tree which is a non linear data structure
 //data structure: a linked binary tree
 //operations: displayPretty, operator=, preorderTraversal,
 //             postorderTraversal,  inorderTraversal,
@@ -60,7 +61,11 @@ void destroyTree(TreeNode *&treep)
     }
 }
 
-// recursive helper for prettyDisplay. You do the doc
+// Print helper recursivly prints tree using In-Order traversal
+// with a appended string
+// pre: TreeNode exists
+// post: Tree is printed to the cout
+// usage: writePretty(root, 0, "root->");
 void writePretty(TreeNode *treep, int level, string append)
 {
     if (treep != nullptr)
@@ -79,9 +84,8 @@ void writePretty(TreeNode *treep, int level, string append)
 // ********** recursive helpers for the traversals ****************
 //pre: treep points to the root of a binary tree to be traversed
 //post: prints the item objects in the nodes on the screen in the
-//     specified order. the items are separated by commas
+//     pre order. the items are separated by commas
 //usage: preorder (mroot);
-//       similarly for the others
 void preorder(TreeNode *treep)
 {
     if (treep != nullptr)
@@ -92,6 +96,10 @@ void preorder(TreeNode *treep)
     }
 }
 
+//pre: treep points to the root of a binary tree to be traversed
+//post: prints the item objects in the nodes on the screen in the
+//     in order. the items are separated by commas
+//usage: inorder (mroot);
 void inorder(TreeNode *treep)
 {
     if (treep != nullptr)
@@ -102,6 +110,10 @@ void inorder(TreeNode *treep)
     }
 }
 
+//pre: treep points to the root of a binary tree to be traversed
+//post: prints the item objects in the nodes on the screen in the
+//     post order. the items are separated by commas
+//usage: postorder (mroot);
 void postorder(TreeNode *treep)
 {
     if (treep != nullptr)
@@ -240,9 +252,13 @@ void BinaryTree::makeTreeOne(istream &input) throw(Exception)
 }
 
 //makes a complete but not full binary tree of height 3
-//YOU FINISH
 //throws an exception if there is not enough room in the
 //       heap to make the tree
+//pre input is either cin or an open file
+//    input's pointer is before the first item
+//post: object is a complete binary tree of height 3
+//usgage: myTree.makeTreeTwo(infile);
+
 void BinaryTree::makeTreeTwo(istream &input) throw(Exception)
 {
     Item newguy;
