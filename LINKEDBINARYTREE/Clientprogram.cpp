@@ -1,3 +1,6 @@
+//file Clientprogram.cpp
+//author Max Chehab and Kevin Shaw
+//date 2/28/2018
 #include "BinaryTree.h"
 #include "Exception.h"
 #include <string>
