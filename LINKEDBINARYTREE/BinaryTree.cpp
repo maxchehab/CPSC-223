@@ -71,13 +71,13 @@ void writePretty(TreeNode *treep, int level, string append)
     if (treep != nullptr)
     {
         level++;
-        writePretty(treep->leftChild, level, "/");
+        writePretty(treep->rightChild, level, "      /");
         for (int i = 1; i < level; i++)
         {
             cout << "\t\t";
         }
         cout << append << treep->item;
-        writePretty(treep->rightChild, level, "\\");
+        writePretty(treep->leftChild, level, "      \\");
     }
 }
 
@@ -194,7 +194,7 @@ BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exc
 //usage: tree.prettyDisplay();
 void BinaryTree::prettyDisplay()
 {
-    writePretty(root, 0, "root -> ");
+    writePretty(root, 0, "root ->");
 }
 
 // *************** on the following traversals
@@ -288,5 +288,9 @@ void BinaryTree::makeTreeTwo(istream &input) throw(Exception)
     if (root->rightChild == nullptr)
     {
         throw Exception("makeTreeTwo: no room in the heap");
+    }
+    else
+    {
+        throw Exception("I am throwing an exception at you, Dr. Y. Do you have your catcher’s mitt ready?");
     }
 }

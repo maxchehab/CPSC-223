@@ -2,7 +2,7 @@
 //author Dr. Y
 //date Oct 16, 2013
 
-//ADT TreeNode for a binary tree: data object a node with 
+//ADT TreeNode for a binary tree: data object a node with
 //                            an item and a pointer to left and right children
 // operations: constructors
 
@@ -17,18 +17,20 @@ using namespace std;
 class TreeNode
 {
 public:
- 
-//YOU DO     
-TreeNode();
+  //pre: nothing
+  //post: assigns right and left child no be nothing
+  //usage: TreeNode myTree();
+  TreeNode();
 
-//YOU DO
-TreeNode(const Item& newItem, TreeNode* theLeft, TreeNode* theRight);
-   
-Item item;
-TreeNode* leftChild;
-TreeNode* rightChild;
+  //pre: item is populated, theLeft and theRight pointers point to a
+  //      treenode or nullptr
+  //post: Populates treenode with the provided new item, and left and right
+  //      child treenode pointers
+  //usage: TreeNode myTree(myItem, leftItemPointer, rightItemPointer);
+  TreeNode(const Item &newItem, TreeNode *theLeft, TreeNode *theRight);
 
+  Item item;
+  TreeNode *leftChild;
+  TreeNode *rightChild;
 };
 #endif
-
-
