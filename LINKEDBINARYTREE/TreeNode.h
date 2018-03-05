@@ -1,12 +1,24 @@
 //file TreeNode.h
-//author Dr. Y
-//date Oct 16, 2013
+//author Max Chehab and Kevin Shaw
+//date 2/28/2018
 
 //ADT TreeNode for a binary tree: data object a node with
 //                            an item and a pointer to left and right children
 // operations: constructors
 
 // Especially designed for the BinaryTree class
+
+//file BinaryTree.cpp
+//author Max Chehab and Kevin Shaw
+//date 2/28/2018
+
+// Specification of ADT TreeNode
+//data object: a binary tree which is a non linear data structure
+//data structure: a linked binary tree
+//operations: displayPretty, operator=, preorderTraversal,
+//             postorderTraversal,  inorderTraversal,
+//             makeTreeOne, makeTreeTwo
+
 #ifndef NODE_H
 #define NODE_H
 

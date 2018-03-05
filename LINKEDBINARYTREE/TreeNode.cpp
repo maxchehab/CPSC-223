@@ -1,3 +1,12 @@
+//file TreeNode.cpp
+//author Max Chehab and Kevin Shaw
+//date 2/28/2018
+
+//ADT TreeNode for a binary tree: data object a node with
+//                            an item and a pointer to left and right children
+// operations: constructors
+
+// Especially designed for the BinaryTree class
 #include "TreeNode.h"
 
 //pre: nothing

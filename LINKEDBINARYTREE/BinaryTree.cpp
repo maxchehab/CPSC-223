@@ -2,12 +2,16 @@
 //author Max Chehab and Kevin Shaw
 //date 2/28/2018
 
-// Specification of ADT Item
-//data object: a binary tree which is a non linear data structure
-//data structure: a linked binary tree
-//operations: displayPretty, operator=, preorderTraversal,
-//             postorderTraversal,  inorderTraversal,
-//             makeTreeOne, makeTreeTwo
+// Specification of ADT BinaryTree
+// Data object: A binary tree T that is either empty or in the form
+// you finish
+
+//    Operations: (a scaled-down version)
+//       create, destroy, copy, operator=,
+//       traversals (preorder, inorder, postorder)
+// Contract: Assumes the this class can access private data members of class Node.
+//    Those data members are: Item item, Node* leftptr, Node* rightptr.
+//    There is a constructor that allows caller to give item, left and right ptrs.
 
 #include "BinaryTree.h"
 #include <iostream>
