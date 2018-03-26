@@ -41,6 +41,8 @@ int main()
 
     cout << "insert item > ";
     cin >> newItem;
+
+    //Test search exception
     try
     {
         tree.search(newItem, foundItem);
@@ -52,7 +54,13 @@ int main()
         {
             printGreen("Exception works in search.");
         }
+        else
+        {
+            PrintExceptionMessage(ex);
+        }
     }
+
+    //Test insert
     try
     {
         tree.insert(newItem);
@@ -62,6 +70,7 @@ int main()
         PrintExceptionMessage(ex);
     }
 
+    //Test search
     try
     {
         tree.search(newItem, foundItem);
@@ -71,6 +80,7 @@ int main()
         PrintExceptionMessage(ex);
     }
 
+    //Compare (assert)
     if (newItem == foundItem)
     {
         printGreen("search and insert works");

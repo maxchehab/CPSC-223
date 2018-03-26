@@ -189,11 +189,11 @@ void PrintTree(BinarySearchTree &tree)
 void RebalanceTree(BinarySearchTree &tree)
 {
     ofstream outputFile;
+    ifstream inputFile;
+
     OpenOutputFile(outputFile, "dictionary.dat");
     tree.inorderTraverse(outputFile);
     outputFile.close();
-
-    ifstream inputFile;
 
     OpenInputFile(inputFile, "dictionary.dat");
     CreateTreeFromInputFile(inputFile, tree);
@@ -207,6 +207,7 @@ void RebalanceTree(BinarySearchTree &tree)
 void SaveTree(BinarySearchTree &tree)
 {
     ofstream outputFile;
+
     OpenOutputFile(outputFile, "dictionary.dat");
     tree.inorderTraverse(outputFile);
     outputFile.close();

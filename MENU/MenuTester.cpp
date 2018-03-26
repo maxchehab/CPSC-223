@@ -4,12 +4,13 @@ using namespace std;
 
 void printMenu();
 void getOption(char &);
-bool isNotExit(char);
-void doOption(char);
+bool isNotExit(const char);
+void doOption(const char);
 
 int main()
 {
     char option;
+
     do
     {
         printMenu();
@@ -41,12 +42,12 @@ void getOption(char &option)
     cin.get();
 }
 
-bool isNotExit(char option)
+bool isNotExit(const char option)
 {
     return option != 'e';
 }
 
-void doOption(char option)
+void doOption(const char option)
 {
     cout << "Doing " << option << endl
          << endl;
