@@ -6,6 +6,10 @@
 #include <fstream>
 using namespace std;
 
+//Prints provided input in red text
+//post Text is printed in red
+//usage printRed("this is red text");
+//Note "\033[1;31mred text\033[0m is a terminal escape sequence to print the inner text in red.
 void printRed(const string input)
 {
     cout << "\033[1;31m" << input << "\033[0m" << endl;
@@ -52,6 +56,11 @@ void OpenOutputFile(ofstream &outputFile, string filename)
     }
 }
 
+//Create a tree from an input file
+//pre inptFile is open
+//post  Provided tree is populated with data from input file
+//      if there was an error it will be reported.
+//usage CreateTreeFromInputFile(inputFile, mytree);
 void CreateTreeFromInputFile(ifstream &inputFile, BinarySearchTree &tree)
 {
     int numberItems;
@@ -68,6 +77,10 @@ void CreateTreeFromInputFile(ifstream &inputFile, BinarySearchTree &tree)
     }
 }
 
+//Prints menu options in colorful format
+//post Menu options are printed
+//usage PrintMenu()
+//Note "\033[1;32mgreen text\033[0m is a terminal escape sequence to print the inner text in green.
 void PrintMenu()
 {
     cout << "Your options are:" << endl;
@@ -83,6 +96,10 @@ void PrintMenu()
          << endl;
 }
 
+//Prompts user to delete an item from a tree.
+//pre provided tree exists
+//post Item is deleted or if an error occurs, the error is reported.
+//usage DeleteItem(mytree);
 void DeleteItem(BinarySearchTree &tree)
 {
     Key targetPhone;
@@ -101,6 +118,10 @@ void DeleteItem(BinarySearchTree &tree)
     }
 }
 
+//Prompts user to find an item from a tree
+//pre provided tree exists
+//post found item is printed to the screen or an error will be reported.
+//usage FindItem(mytree);
 void FindItem(BinarySearchTree &tree)
 {
     Item item;
@@ -120,6 +141,10 @@ void FindItem(BinarySearchTree &tree)
     }
 }
 
+//Prompts user to insert item from tree
+//pre provided tree exists
+//post if an error occurs it will be reported
+//usage InsertItem(mytree);
 void InsertItem(BinarySearchTree &tree)
 {
     Item item;
@@ -137,17 +162,30 @@ void InsertItem(BinarySearchTree &tree)
     }
 }
 
+//List tree in an inorder traversal
+//pre provided tree exists
+//post tree is printed in an inorder traversal
+//usage ListTree(mytree);
 void ListTree(BinarySearchTree &tree)
 {
     BinaryTree *btreep = &tree;
     btreep->inorderTraverse(cout);
 }
 
+//Tree is pretty displayed to terminal
+//pre provided tree exists
+//post tree is pretty displayed to the terminal
+//usage PrintTree(mytree);
 void PrintTree(BinarySearchTree &tree)
 {
     tree.prettyDisplay();
 }
 
+//Saves tree to file and recreates it. This forces the tree to be sorted
+//  in the best possible way.
+//pre tree exists
+//post provided tree is rebalanced
+//usage RebalanceTree(mytree);
 void RebalanceTree(BinarySearchTree &tree)
 {
     ofstream outputFile;
@@ -162,6 +200,10 @@ void RebalanceTree(BinarySearchTree &tree)
     inputFile.close();
 }
 
+//Saves tree to a file
+//pre provided tree exist
+//post saves a tree to file in an inorder traverse
+//usage SaveTree(mytree);
 void SaveTree(BinarySearchTree &tree)
 {
     ofstream outputFile;
@@ -172,11 +214,9 @@ void SaveTree(BinarySearchTree &tree)
     cout << "Saved tree to dictionary.dat successfuly." << endl;
 }
 
-void Exit(BinarySearchTree &tree)
-{
-    SaveTree(tree);
-}
-
+//Prompts the user for a single character option
+//post provided character is populated with user's decision
+//usage GetOption(myoption);
 void GetOption(char &option)
 {
     cout << "\033[1;32mEnter your option > \033[0m";
@@ -184,11 +224,18 @@ void GetOption(char &option)
     cin.get();
 }
 
+//Determines if the provided option is an exit option
+//post returns true or false relative to the provided option
+//usage IsNotExit(myoption);
 bool IsNotExit(const char option)
 {
     return option != 'e';
 }
 
+//Executes a method relative to the provided users option.
+//pre: the provided option and tree must exists
+//post: the method that the option is for is executed
+//usage: DoOption(myoption, mytree);
 void DoOption(const char option, BinarySearchTree &tree)
 {
     cout << "Selected [\033[1;32m" << option << "\033[0m]." << endl;
@@ -216,7 +263,7 @@ void DoOption(const char option, BinarySearchTree &tree)
         SaveTree(tree);
         break;
     case 'e':
-        Exit(tree);
+        SaveTree(tree);
         break;
     default:
         PrintMenu();

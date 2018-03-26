@@ -1,14 +1,13 @@
 //file BinarySearchTree.h
 //author Max Chehab
-//date october 16, 2013 mopdified on February 21, 2018
+//date october 16, 2013 modified on March 26, 2018
 
 // Specification of ADT Binary Search Tree
-//    Data object: A binary tree T that is either empty or in the form
+//    Data object: A binary search tree T that is either empty or in the form
 // you finish
 
 //    Operations: (a scaled-down version)
-//       create, destroy, copy, operator=,
-//       traversals (preorder, inorder, postorder)
+//       insert, rebalance, remove, remove, inorder traverse
 // Contract: Assumes the this class can access private data members of class Node.
 //    Those data members are: Item item, Node* leftptr, Node* rightptr.
 //    There is a constructor that allows caller to give item, left and right ptrs.

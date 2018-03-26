@@ -1,14 +1,13 @@
 //file BinarySearchTree.cpp
 //author Max Chehab
-//date october 16, 2013 mopdified on February 21, 2018
+//date october 16, 2013 modified on March 26, 2018
 
 // Specification of ADT Binary Search Tree
 //    Data object: A binary search tree T that is either empty or in the form
 // you finish
 
 //    Operations: (a scaled-down version)
-//       create, destroy, copy, operator=,
-//       traversals (preorder, inorder, postorder)
+//       insert, rebalance, remove, remove, inorder traverse
 // Contract: Assumes the this class can access private data members of class Node.
 //    Those data members are: Item item, Node* leftptr, Node* rightptr.
 //    There is a constructor that allows caller to give item, left and right ptrs.
@@ -17,14 +16,29 @@
 #include "Item.h"
 #include <fstream>
 
+// Gets the item associated with the inorder successor of a treenode
+//pre: treep is not nullptr
+//post: newItem is equal to the inorder successor of the provided treenode.
+//usage: getInorderSucessorItem(myTreenode->leftChild, newItem);
 void getInorderSucessorItem(TreeNode *treep, Item &newItem);
 
+//Removes a specified item from a treenode and it's children
+//pre: The targetPhone exists.
+//post: A treenode, representing the tree is returned with the item who's
+//      phone matches the provided targetPhone removed.
+//usage: root = removeHelper(root, targetPhone);
 TreeNode *removeTreeNode(TreeNode *treep);
 
+// Handles removal of specified tree node based on three conditions,
+//  1) it is a leaf, it has one child, it has two children.
+// pre: treep is not nullptr
+// post: returns either nullptr, or a restructed tree.
+// usage: TreeNode mytreenode = removeTreeNode(otherTreenode);
 TreeNode *removeHelper(TreeNode *treep, const Key &targetPhone) throw(Exception);
 
 using namespace std;
 
+// traveres and outputs treenode in an inorder traversal
 //pre: treep points to the root of a binary tree to be traversed
 //post: prints the item objects in the nodes on the screen in the
 //     in order. the items are separated by commas
@@ -39,6 +53,12 @@ void inorderHelper(ostream &outputStream, TreeNode *treep)
     }
 }
 
+// attaches a new treenode into correct place of a provided treenode using the
+//  binary search algorithm
+//pre: item exists
+//post: if an item of the same contents exists an exception will be thrown
+//  if not, the returned treenode will contain the provided item within
+//  its children.
 TreeNode *insertHelper(TreeNode *treep, const Item &item) throw(Exception)
 {
     if (treep == nullptr)
@@ -64,6 +84,10 @@ TreeNode *insertHelper(TreeNode *treep, const Item &item) throw(Exception)
     return treep;
 }
 
+// Gets the item associated with the inorder successor of a treenode
+//pre: treep is not nullptr
+//post: newItem is equal to the inorder successor of the provided treenode.
+//usage: getInorderSucessorItem(myTreenode->leftChild, newItem);
 void getInorderSucessorItem(TreeNode *treep, Item &newItem)
 {
     if (treep->leftChild == nullptr)
@@ -76,6 +100,11 @@ void getInorderSucessorItem(TreeNode *treep, Item &newItem)
     }
 }
 
+// Handles removal of specified tree node based on three conditions,
+//  1) it is a leaf, it has one child, it has two children.
+// pre: treep is not nullptr
+// post: returns either nullptr, or a restructed tree.
+// usage: TreeNode mytreenode = removeTreeNode(otherTreenode);
 TreeNode *removeTreeNode(TreeNode *treep)
 {
     if (treep->leftChild == nullptr && treep->rightChild == nullptr)
@@ -100,8 +129,14 @@ TreeNode *removeTreeNode(TreeNode *treep)
         treep->item = newItem;
         return treep;
     }
+    return nullptr;
 }
 
+//Removes a specified item from a treenode and it's children
+//pre: The targetPhone exists.
+//post: A treenode, representing the tree is returned with the item who's
+//      phone matches the provided targetPhone removed.
+//usage: root = removeHelper(root, targetPhone);
 TreeNode *removeHelper(TreeNode *treep, const Key &targetPhone) throw(Exception)
 {
     if (treep == nullptr)
@@ -127,6 +162,12 @@ TreeNode *removeHelper(TreeNode *treep, const Key &targetPhone) throw(Exception)
     return treep;
 }
 
+// Builds a treenode whos branches and leaves represent a provided input stream
+//pre: The provided input file is open. The provided length represents
+//     the number of items to be added.
+//     The cursor of the input file is directly before an item
+//post: A treenode is recreated using the data provided by the input file.
+//usage: root = rebalanceHelper(cout, 7);
 TreeNode *rebalanceHelper(ifstream &inputFile, int length) throw(Exception)
 {
     if (length > 0)
@@ -150,7 +191,11 @@ TreeNode *rebalanceHelper(ifstream &inputFile, int length) throw(Exception)
         return nullptr;
     }
 }
-
+//will traverse the binary search tree using a binary search algorithm.
+//      if the item is not found an exception will be thrown.
+//pre: provided targetPhone exists
+//post: the provided item will be populated with the found item or an exception will be thrown
+//usage: searchHelper(root, targetPhone, item);
 void searchHelper(TreeNode *treep, const Key &targetPhone, Item &item) throw(Exception)
 {
     if (treep == nullptr)
@@ -171,29 +216,64 @@ void searchHelper(TreeNode *treep, const Key &targetPhone, Item &item) throw(Exc
     }
 }
 
+//Searches the binary search tree for a provide phone number.
+//  Will throw exception if phone number not found.
+//pre: The provided targetPhone has been created.
+//post: If an item who's phone number matches targetPhone exists the provided item will be populated
+//      else an exception will be thrown.
+//      An exception will be thrown if there is not enough heap space.
+//usage: myTree.insert (newItem);
 void BinarySearchTree::search(const Key &targetPhone, Item &item) throw(Exception)
 {
     searchHelper(root, targetPhone, item);
 }
 
+// inserts an item into the tree.
+//pre: The provided item has been created.
+//post: The tree inserts the provided item into the tree.
+//      An exception will be thrown if there is not enough heap space.
+//usage: myTree.insert (newItem);
 void BinarySearchTree::insert(const Item &item) throw(Exception)
 {
     root = insertHelper(root, item);
     numberOfItems++;
 }
 
+// Removes an item from the tree.
+//pre: The provided targetPhone exists inside the tree. If not an exception will be thrown.
+//post: The an item who's phone number matches targetPhone will be removed from the tree.
+//usage: myTree.remove (targetPhone);
 void BinarySearchTree::remove(const Key &targetPhone) throw(Exception)
 {
     root = removeHelper(root, targetPhone);
     numberOfItems--;
 }
 
+// Constructs a tree from an input stream
+//pre: The provided input file is open. The provided length represents
+//     the number of items to be added.
+//     The cursor of the input file is directly before an item
+//     For example:
+//     1000000 Emma Stach
+//     1234566 Michale Jordan
+//     1234567 Bob marley
+//     2000000 Emma Wolfame
+//     3000000 Max Chehab
+//     4000000 Kevin Hart
+//     5000000 Mason Delutri
+
+//post: The tree is recreated using the data provided by the input file.
+//usage: myTree.rebalance (inputFile, 7);
 void BinarySearchTree::rebalance(ifstream &inputFile, const int length) throw(Exception)
 {
     root = rebalanceHelper(inputFile, length);
     numberOfItems = length;
 }
 
+// Prints a list of the tree in an inorder traversal
+//pre: The provided output stream is open.
+//post: the tree is printed in a list style with the number of items first.
+//usage: myTree.inorderTraverse (cout);
 void BinarySearchTree::inorderTraverse(ostream &outputStream)
 {
     outputStream << numberOfItems << endl;
