@@ -74,20 +74,20 @@ void destroyTree(TreeNode *&treep)
 // Print helper recursivly prints tree using In-Order traversal
 // with a appended string
 // pre: TreeNode exists
-// post: Tree is printed to the cout
-// usage: writePretty(root, 0, "root->");
-void writePretty(TreeNode *treep, int level, string append)
+// post: Tree is printed to the provide output
+// usage: writePretty(root, 0, "root->", output);
+void writePretty(TreeNode *treep, int level, string append, ostream &output)
 {
     if (treep != nullptr)
     {
         level++;
-        writePretty(treep->rightChild, level, "    /");
+        writePretty(treep->rightChild, level, "    /", output);
         for (int i = 1; i < level; i++)
         {
-            cout << "     ";
+            output << "     ";
         }
-        cout << append << treep->item << ":" << treep->balance << endl;
-        writePretty(treep->leftChild, level, "    \\");
+        output << append << treep->item << ":" << treep->balance << endl;
+        writePretty(treep->leftChild, level, "    \\", output);
     }
 }
 // ********** recursive helpers for the traversals ****************
@@ -201,9 +201,9 @@ BinaryTree &BinaryTree::operator=(const BinaryTree &rightHandSideTree) throw(Exc
 //nodes at the same level are indented the same.
 //Viewer must rotate head 90 degrees in order to look like a cs tree
 //usage: tree.prettyDisplay();
-void BinaryTree::prettyDisplay()
+void BinaryTree::prettyDisplay(ostream &output)
 {
-    writePretty(root, 0, "root ->");
+    writePretty(root, 0, "root ->", output);
 }
 
 // *************** on the following traversals

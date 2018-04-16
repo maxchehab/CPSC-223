@@ -20,6 +20,14 @@ SearchPath::SearchPath()
     }
 }
 
+AVLTree::AVLTree()
+{
+}
+
+AVLTree::~AVLTree()
+{
+}
+
 //Evan Swanson, Ryan Hays, Patrick Seminatore, Mason Dellutri, and Dr. Y
 
 //Inserts a new item and assigns the search path and its size
@@ -203,15 +211,25 @@ bool isDoubleRotateLeftRight(const SearchPath &search)
     }
     return isRotation;
 }
+// performs a left rotation on a provided search path.
+//pre: search path exists and is populated.
+//post: if the pivot index is 0, pivot child will be returned, else
+//      the first index of search path will be returned.
+//      The pivot's child and pivot are swaped as are their children
+//      The pivot and pivot's childrens balances will be set to 0.
+//usage: root = doLeftRotate(search);
+// //ex:
+//         /800:0
+// root ->750:-1
+//          \500:-1
+//               \250:0
+// insert(100)
 
-AVLTree::AVLTree()
-{
-}
-
-AVLTree::~AVLTree()
-{
-}
-
+//          /800:0
+// root ->750:-1
+//               /500:0
+//          \250:0
+//               \100:0
 TreeNode *doLeftRotate(SearchPath &search)
 {
     TreeNode *cloud = search.path[search.pivotIndex - 1];
@@ -228,8 +246,7 @@ TreeNode *doLeftRotate(SearchPath &search)
 
     if (search.pivotIndex == 0)
     {
-        TreeNode *tempNode = pivotChild;
-        search.path[0] = tempNode;
+        search.path[0] = pivotChild;
     }
     else if (cloud->rightChild == pivot)
     {
@@ -246,6 +263,28 @@ TreeNode *doLeftRotate(SearchPath &search)
     return search.path[0];
 }
 
+// performs a right rotation on a provided search path.
+//pre: search path exists and is populated.
+//post: if the pivot index is 0, pivot child will be returned, else
+//      the first index of search path will be returned.
+//      The pivot's child and pivot are swaped as are their children
+//      The pivot and pivot's childrens balances will be set to 0.
+//usage: root = doRightRotate(search);
+//ex:
+//               /700:0
+//          /500:0
+//               \300:0
+// root ->250:1
+//          \200:0
+
+// insert(350)
+
+//               /700:0
+//          /500:0
+//               \350:0
+// root ->300:0
+//          \250:1
+//               \200:0
 TreeNode *doRightRotate(SearchPath &search)
 {
     TreeNode *cloud = search.path[search.pivotIndex - 1];
@@ -262,8 +301,7 @@ TreeNode *doRightRotate(SearchPath &search)
 
     if (search.pivotIndex == 0)
     {
-        TreeNode *tempNode = pivotChild;
-        search.path[0] = tempNode;
+        search.path[0] = pivotChild;
     }
     else if (cloud->rightChild == pivot)
     {
@@ -280,6 +318,34 @@ TreeNode *doRightRotate(SearchPath &search)
     return search.path[0];
 }
 
+//performs a double rotate right left rotation on a provided search path.
+//pre: search path exists and is populated.
+//post: if the pivot index is 0, pivot child's child will be returned, else
+//      the first index of search path will be returned.
+//      The grand child is swapped with the pivot and the pivot is
+//      swapped with the pivot child as is their children.
+//      If the new item is a left child of its parent, pivot balance will be
+//      1 and pivot's child will be 0 else if the new item is a right child of
+//      its parent, pivot balance will be 0 and pivot's child will 1. The
+//      grandchild's balance will be 0.
+//usage: root = doLeftRotate(search);
+//ex:
+//               /100:0
+//          /075:0
+//               \060:0
+// root ->050:0
+//          \025:-1
+//               \020:0
+
+// insert(005)
+
+//               /100:0
+//          /075:0
+//               \060:0
+// root ->050:0
+//               /025:0
+//          \020:0
+//               \005:0
 TreeNode *doDoubleRotateLeftRight(SearchPath &search)
 {
     TreeNode *cloud = search.path[search.pivotIndex - 1];
@@ -303,8 +369,7 @@ TreeNode *doDoubleRotateLeftRight(SearchPath &search)
 
     if (search.pivotIndex == 0)
     {
-        TreeNode *tempNode = grandChild;
-        search.path[0] = tempNode;
+        search.path[0] = grandChild;
     }
     else if (cloud->rightChild == pivot)
     {
@@ -330,6 +395,32 @@ TreeNode *doDoubleRotateLeftRight(SearchPath &search)
     return search.path[0];
 }
 
+// performs a double rotate right left rotation on a provided search path.
+//pre: search path exists and is populated.
+//post: if the pivot index is 0, pivot child's child will be returned, else
+//      the first index of search path will be returned.
+//      The grand child is swapped with the pivot and the pivot is
+//      swapped with the pivot child as is their children.
+//      If the new item is a left child of its parent, pivot balance will be
+//      0 and pivot's child will be 1 else if the new item is a right child of
+//      its parent, pivot balance will be 1 and pivot's child will 0. The
+//      grandchild's balance will be 0.
+//usage: root = doLeftRotate(search);
+//ex:
+//               /700:0
+//          /500:0
+//               \300:0
+// root ->250:1
+//          \200:0
+
+// insert(350)
+
+//               /700:0
+//          /500:0
+//               \350:0
+// root ->300:0
+//          \250:1
+//               \200:0
 TreeNode *doDoubleRotateRightLeft(SearchPath &search)
 {
     TreeNode *cloud = search.path[search.pivotIndex - 1];
@@ -353,29 +444,24 @@ TreeNode *doDoubleRotateRightLeft(SearchPath &search)
 
     if (search.pivotIndex == 0)
     {
-        TreeNode *tempNode = grandChild;
-        search.path[0] = tempNode;
+        search.path[0] = grandChild;
     }
     else if (cloud->rightChild == pivot)
     {
-        cout << "RIGHT" << endl;
         cloud->rightChild = grandChild;
     }
     else
     {
-        cout << "LEFT" << endl;
         cloud->leftChild = grandChild;
     }
 
     if (leftChild)
     {
-        cout << "left child" << endl;
         pivot->balance = 0;
         pivotChild->balance = 1;
     }
     else
     {
-        cout << "right child" << endl;
         pivot->balance = 1;
         pivotChild->balance = 0;
     }
@@ -384,6 +470,12 @@ TreeNode *doDoubleRotateRightLeft(SearchPath &search)
     return search.path[0];
 }
 
+// inserts an item into the tree. If the insert results in an unbalanced tree
+//      the tree will be reblanced.
+//pre: The provided item has been created.
+//post: The tree inserts the provided item into the tree.
+//      An exception will be thrown if there is not enough heap space.
+//usage: myTree.insert (newItem);
 void AVLTree::insert(const Item &newItem) throw(Exception)
 {
     SearchPath search;
@@ -410,16 +502,12 @@ void AVLTree::insert(const Item &newItem) throw(Exception)
 
     else if (isDoubleRotateLeftRight(search))
     {
-        cout << 4 << endl;
         root = doDoubleRotateLeftRight(search);
         fixBalances(search, search.pivotIndex + 3);
     }
     else
     {
-        cout << 5 << endl;
-
         root = doDoubleRotateRightLeft(search);
         fixBalances(search, search.pivotIndex + 3);
-        //   perhaps a call to fixBalances
     }
 }

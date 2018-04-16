@@ -15,15 +15,6 @@ void printRed(const string input)
     cout << "\033[1;31m" << input << "\033[0m" << endl;
 }
 
-//Prints provided input in green text
-//post Text is printed in red
-//usage printGreen("this is green text");
-//Note "\033[1;32mgreen text\033[0m is a terminal escape sequence to print the inner text in green.
-void printGreen(const string input)
-{
-    cout << "\033[1;32m" << input << "\033[0m" << endl;
-}
-
 //prints an exception message
 //pre except has been thrown
 //post except is printed to the screen with two newlines before and after
@@ -65,13 +56,12 @@ void OpenOutputFile(ofstream &outputFile, string filename)
     }
 }
 
-void printBreak()
-{
-    cout << endl;
-    printGreen("-------------------------------------");
-    cout << endl;
-}
-
+//fills a provided tree with provided input
+//pre tree exists
+//Input file starts with number denoting amount of items
+//post tree is populated with contents of newItem.
+//    cursor of input file is at next line of new the last item
+//usage readInputToTree(inputFile, myTree);
 void readInputToTree(istream &input, AVLTree &tree)
 {
     Item newItem;
@@ -86,50 +76,79 @@ void readInputToTree(istream &input, AVLTree &tree)
     }
 }
 
-void runTest(string name, istream &input)
+//executes a test
+//pre subcase denotes the name of test, input and output is open
+//post output stream is populated with test output.
+//usage runTest("my test", input, output);
+void runTest(string subcase, istream &input, ostream &output)
 {
     AVLTree tree;
     Item newItem;
 
-    printGreen("Testing " + name);
+    output << endl
+           << subcase << endl
+           << endl;
     readInputToTree(input, tree);
 
-    tree.prettyDisplay();
+    tree.prettyDisplay(output);
     input >> newItem;
-    printBreak();
     try
     {
-        cout << "Inserting " << newItem << endl;
+        output << endl
+               << newItem
+               << endl
+               << endl;
         tree.insert(newItem);
     }
     catch (Exception ex)
     {
-        printRed(ex.What());
+        output << ex.What() << endl;
     }
-    tree.prettyDisplay();
+    tree.prettyDisplay(output);
+    output << endl;
 }
 
 int main()
 {
     ifstream input;
+    ofstream output;
 
-    OpenInputFile(input, "dictionary.dat");
-    runTest("Rotate Left, Pivot Index at 0", input);
-    runTest("Rotate Left, Right Child", input);
-    runTest("Rotate Left, Left Child", input);
-    runTest("Rotate Right, Pivot Index at 0", input);
-    runTest("Rotate Right, Right Child", input);
-    runTest("Rotate Right, Left Child", input);
-    runTest("Rotate Double Left Right, Pivot Index at 0, right child", input);
-    runTest("Rotate Double Left Right, Pivot Index at 0, left child", input);
-    runTest("Rotate Double Left Right, left child", input);
-    runTest("Rotate Double Left Right, right child", input);
-    runTest("Rotate Double Right Left, Pivot Index at 0, right child", input);
-    runTest("Rotate Double Right Left, Pivot Index at 0, left child", input);
-    runTest("Rotate Double Left Right, right child", input);
-    runTest("Rotate Double Left Right, left child", input);
+    OpenInputFile(input, "in8.dat");
+    OpenOutputFile(output, "avl.dat");
 
-    printBreak();
+    output
+        << "       HAS NO PIVOT" << endl;
+    runTest("Test1: CASE OF EMPTY TREE", input, output);
+    runTest("Test2: CASE OF HEIGHT 1", input, output);
+    runTest("Test2: CASE OF HEIGHT 2", input, output);
 
+    output << "       Added To Short Side" << endl;
+    runTest("Test1: CASE OF HEIGHT 4", input, output);
+    runTest("Test2: CASE OF HEIGHT 3", input, output);
+
+    output << "       SINGLE ROTATE LEFT" << endl;
+    runTest("Test1: PIVOT INDEX AT 0", input, output);
+    runTest("Test2: CLOUD POINTING TO RIGHT CHILD", input, output);
+    runTest("Test3: CLOUD POINTING TO LEFT CHILD", input, output);
+
+    output << "       SINGLE ROTATE LEFT" << endl;
+    runTest("Test1: PIVOT INDEX AT 0", input, output);
+    runTest("Test2: CLOUD POINTING TO RIGHT CHILD", input, output);
+    runTest("Test3: CLOUD POINTING TO LEFT CHILD", input, output);
+
+    output << "       DOUBLE ROTATE LEFT RIGHT" << endl;
+    runTest("Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD", input, output);
+    runTest("Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD", input, output);
+    runTest("Test3: CLOUD POINTING TO LEFT CHILD", input, output);
+    runTest("Test4: CLOUD POINTING TO RIGHT CHILD", input, output);
+
+    output << "       DOUBLE ROTATE RIGHT LEFT" << endl;
+    runTest("Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD", input, output);
+    runTest("Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD", input, output);
+    runTest("Test3: CLOUD POINTING TO RIGHT CHILD", input, output);
+    runTest("Test4: CLOUD POINTING TO LEFT CHILD", input, output);
+
+    input.close();
+    output.close();
     return 0;
 }
