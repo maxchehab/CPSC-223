@@ -1,2 +1,0 @@
-clang++ -std=c++11 Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o Dodictionary 
-makefile:2: recipe for target 'all' failed

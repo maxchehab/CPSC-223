@@ -1,18 +1,12 @@
 all: Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp
-	clang++ -std=c++11 Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o Dodictionary 
-	./Dodictionary
-
-test: Exception.cpp Searchtreetester.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp
-	clang++ -std=c++11 Exception.cpp Searchtreetester.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o Searchtreetester 
-	./Searchtreetester
-
+	clang++ -std=c++11 Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o holy 
+	./holy
 
 build: Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp
-	clang++ -std=c++11 Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o Dodictionary
+	clang++ -std=c++11 Exception.cpp Clientprogram.cpp TreeNode.cpp BinarySearchTree.cpp AVLTree.cpp BinaryTree.cpp  Item.cpp Key.cpp -o holy
 clean: 
-	$(RM) ./Dodictionary
-	$(RM) ./Searchtreetester
+	$(RM) ./holy
 
-run: Dodictionary
-	./Dodictionary
+run: holy
+	./holy
 
