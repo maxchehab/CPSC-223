@@ -33,29 +33,23 @@ root ->500:-1
 
        Added To Short Side
 
-Test1: CASE OF HEIGHT 4
+Test1: CASE OF ADDING TO RIGHT
+
+         /700:0
+root ->500:-1
+         \300:-1
+              \200:0
+
+800
 
               /800:0
          /700:1
-root ->500:-1
-                   /350:0
-              /300:1
-         \200:1
-              \100:0
-
-050
-
-              /800:0
-         /700:1
-root ->500:-1
-                   /350:0
-              /300:1
-         \200:0
-              \100:-1
-                   \050:0
+root ->500:0
+         \300:-1
+              \200:0
 
 
-Test2: CASE OF HEIGHT 3
+Test2: CASE OF ADDING TO LEFT
 
               /800:0
          /700:1
@@ -194,7 +188,27 @@ root ->500:1
 
        DOUBLE ROTATE LEFT RIGHT
 
-Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD
+Test1: PIVOT INDEX AT 0
+
+              /100:0
+         /075:0
+              \060:0
+root ->051:0
+         \026:-1
+              \020:0
+
+005
+
+              /100:0
+         /075:0
+              \060:0
+root ->051:0
+              /026:0
+         \020:0
+              \005:0
+
+
+Test2: NEW ITEM AT LEFT CHILD
 
               /100:0
          /075:0
@@ -214,7 +228,7 @@ root ->050:0
               \005:0
 
 
-Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD
+Test3: NEW ITEM AT RIGHT CHILD
 
          /700:0
 root ->500:-1
@@ -232,7 +246,7 @@ root ->250:0
               \100:0
 
 
-Test3: CLOUD POINTING TO LEFT CHILD
+Test4: CLOUD POINTING TO LEFT CHILD
 
          /700:0
 root ->500:-1
@@ -250,7 +264,7 @@ root ->250:0
               \100:0
 
 
-Test4: CLOUD POINTING TO RIGHT CHILD
+Test5: CLOUD POINTING TO RIGHT CHILD
 
                    /900:0
               /800:1
@@ -279,7 +293,7 @@ root ->500:0
 
        DOUBLE ROTATE RIGHT LEFT
 
-Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD
+Test1: PIVOT INDEX AT 0
 
                         /097:0
                    /095:1
@@ -317,7 +331,45 @@ root ->040:1
               \010:0
 
 
-Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD
+Test2: NEW ITEM AT RIGHT CHILD
+
+                        /097:0
+                   /095:1
+              /090:0
+                        /086:0
+                   \085:0
+                        \080:0
+         /076:1
+                   /070:0
+              \065:0
+                   \060:0
+root ->041:1
+              /030:-1
+                   \022:0
+         \020:1
+              \010:0
+
+023
+
+                        /097:0
+                   /095:1
+              /090:0
+                        /086:0
+                   \085:0
+                        \080:0
+         /076:1
+                   /070:0
+              \065:0
+                   \060:0
+root ->041:1
+                   /030:0
+              /023:0
+                   \022:0
+         \020:1
+              \010:0
+
+
+Test3: NEW ITEM AT LEFT CHILD
 
               /700:0
          /500:0
@@ -335,7 +387,7 @@ root ->300:0
               \200:0
 
 
-Test3: CLOUD POINTING TO RIGHT CHILD
+Test4: CLOUD POINTING TO RIGHT CHILD
 
               /700:0
          /500:0
@@ -353,7 +405,7 @@ root ->300:0
               \200:0
 
 
-Test4: CLOUD POINTING TO LEFT CHILD
+Test5: CLOUD POINTING TO LEFT CHILD
 
                    /800:0
               /750:0

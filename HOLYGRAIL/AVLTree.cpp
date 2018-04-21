@@ -1,3 +1,7 @@
+// AVLTree.cpp
+// 04/15/2018
+// Max Chehab and Drew Bies
+
 #include "AVLTree.h"
 
 const int MAXHEIGHT = 10;

@@ -1,4 +1,6 @@
-//clientguy
+// Clientprogram.cpp
+// 04/15/2018
+// Max Chehab and Drew Bies
 
 #include "AVLTree.h"
 #include "Exception.h"
@@ -123,8 +125,8 @@ int main()
     runTest("Test2: CASE OF HEIGHT 2", input, output);
 
     output << "       Added To Short Side" << endl;
-    runTest("Test1: CASE OF HEIGHT 4", input, output);
-    runTest("Test2: CASE OF HEIGHT 3", input, output);
+    runTest("Test1: CASE OF ADDING TO RIGHT", input, output);
+    runTest("Test2: CASE OF ADDING TO LEFT", input, output);
 
     output << "       SINGLE ROTATE LEFT" << endl;
     runTest("Test1: PIVOT INDEX AT 0", input, output);
@@ -137,16 +139,18 @@ int main()
     runTest("Test3: CLOUD POINTING TO LEFT CHILD", input, output);
 
     output << "       DOUBLE ROTATE LEFT RIGHT" << endl;
-    runTest("Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD", input, output);
-    runTest("Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD", input, output);
-    runTest("Test3: CLOUD POINTING TO LEFT CHILD", input, output);
-    runTest("Test4: CLOUD POINTING TO RIGHT CHILD", input, output);
+    runTest("Test1: PIVOT INDEX AT 0", input, output);
+    runTest("Test2: NEW ITEM AT LEFT CHILD", input, output);
+    runTest("Test3: NEW ITEM AT RIGHT CHILD", input, output);
+    runTest("Test4: CLOUD POINTING TO LEFT CHILD", input, output);
+    runTest("Test5: CLOUD POINTING TO RIGHT CHILD", input, output);
 
     output << "       DOUBLE ROTATE RIGHT LEFT" << endl;
-    runTest("Test1: PIVOT INDEX AT 0, NEW AT ITEM RIGHT CHILD", input, output);
-    runTest("Test2: PIVOT INDEX AT 0, NEW AT ITEM LEFT CHILD", input, output);
-    runTest("Test3: CLOUD POINTING TO RIGHT CHILD", input, output);
-    runTest("Test4: CLOUD POINTING TO LEFT CHILD", input, output);
+    runTest("Test1: PIVOT INDEX AT 0", input, output);
+    runTest("Test2: NEW ITEM AT RIGHT CHILD", input, output);
+    runTest("Test3: NEW ITEM AT LEFT CHILD", input, output);
+    runTest("Test4: CLOUD POINTING TO RIGHT CHILD", input, output);
+    runTest("Test5: CLOUD POINTING TO LEFT CHILD", input, output);
 
     input.close();
     output.close();
