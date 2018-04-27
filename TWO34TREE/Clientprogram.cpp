@@ -10,9 +10,18 @@ using namespace std;
 //post Text is printed in red
 //usage printRed("this is red text");
 //Note "\033[1;31mred text\033[0m is a terminal escape sequence to print the inner text in red.
-void printRed(const string input)
+string printRed(const string input)
 {
-    cout << "\033[1;31m" << input << "\033[0m" << endl;
+    return "\033[1;31m" + input + "\033[0m";
+}
+
+//Prints provided input in green text
+//post Text is printed in red
+//usage printGreen("this is green text");
+//Note "\033[1;32mgreen text\033[0m is a terminal escape sequence to print the inner text in green.
+string printGreen(const string input)
+{
+    return "\033[1;32m" + input + "\033[0m";
 }
 
 //prints an exception message
@@ -21,7 +30,7 @@ void printRed(const string input)
 //usage PrintExceptionMessage(except);
 void PrintExceptionMessage(const Exception &except)
 {
-    printRed(except.What());
+    cout << printRed(except.What()) << endl;
 }
 
 //opens an input file with a chosen name
@@ -35,7 +44,7 @@ void OpenInputFile(ifstream &inputFile, string filename)
     inputFile.open(filename);
     if (inputFile.fail())
     {
-        printRed("Failed to open file.");
+        cout << printRed("Failed to open file.") << endl;
         exit(1);
     }
 }
@@ -51,24 +60,22 @@ void OpenOutputFile(ofstream &outputFile, string filename)
     outputFile.open(filename);
     if (outputFile.fail())
     {
-        printRed("Failed to open file.");
+        cout << printRed("Failed to open file.") << endl;
         exit(1);
     }
 }
 
 int main()
 {
-    Key key;
-    cout << "key > ";
-    cin >> key;
-    Two34TreeNode *nodeA = new Two34TreeNode(key);
-    cout << "key > ";
-    cin >> key;
-    Two34TreeNode *nodeB = new Two34TreeNode(key);
-    cout << "key > ";
-    cin >> key;
-    Two34TreeNode *nodeC = new Two34TreeNode(key, nodeA, nodeB);
+    Two34Tree tree;
+    Key newKey;
 
-    cout << nodeC->kids[0]->keys[0] << endl;
-    cout << nodeC->kids[3]->keys[0] << endl;
+    while (true)
+    {
+        cout << printGreen("key> ");
+        cin >> newKey;
+
+        tree.insert(newKey);
+        tree.display(cout, 'p');
+    }
 }

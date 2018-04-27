@@ -34,7 +34,7 @@ ostream &operator<<(ostream &output, const Key &rightHandSideKey)
 //usage Key akey;
 Key::Key()
 {
-	phone = 0;
+	phone = -1;
 }
 
 //creates a specific phone number
