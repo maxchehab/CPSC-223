@@ -3,14 +3,10 @@
 //                  3-nodes, and 4-nodes) where a k-node has
 //                  k children
 // note: this is not the formal definition that takes 2 pages in textbook
-//     operations: create, destroy, insert, display
-// Programmer: dr y     Date: April 16, 2002
-// Filename: Two34Tree.h
+//     operations: createkz, destroy, insert, display
+// Programmer: Max Chehab    Date: April 17, 2018
+// Filename: Two34Tree.cpp
 //
-// class Two34TreeNode specifies and implements a node for a
-//    2-3-4 tree with room for 1-3 data items from class citem and
-//    0-4 children
-
 #include "Two34Tree.h"
 
 using namespace std;
@@ -87,7 +83,47 @@ void pretty(ostream &output, Two34TreeNode *treep, int level)
     }
 }
 
-bool treeNodeHasSpace(const Two34TreeNode *treep, int &index)
+//TODO delete
+void printTreeNode(ostream &output, Two34TreeNode *treep)
+{
+    if (treep == nullptr)
+    {
+        output << "[ null ]" << endl;
+        return;
+    }
+
+    output << "[ ";
+    for (int i = 0; i < 3; i++)
+    {
+        output << treep->keys[i] << " ";
+    }
+    output << "]";
+}
+
+// determines if a tree node contains a key.
+//      useful for detecting duplicates.
+// pre: tree node is not nullptr, key is not empty
+// post: if the tree node contains a key true will return
+//      else false
+// usage: if (treeNodeContainsKey(target, newKey)) {cout << "duplicate";}
+bool treeNodeContainsKey(const Two34TreeNode *treep, const Key &key)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        if (treep->keys[i] == key)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// determines if a tree node is full
+// pre: tree node is not nullptr
+// post: if all of a treenode's keys are occupied true will return
+//      else false
+// usage: if (treeNodeIsFull(target)) {cout << "need to split";}
+bool treeNodeIsFull(const Two34TreeNode *treep)
 {
     Key emptyKey;
     emptyKey.emptyIt();
@@ -96,206 +132,18 @@ bool treeNodeHasSpace(const Two34TreeNode *treep, int &index)
     {
         if (treep->keys[i] == emptyKey)
         {
-            index = i;
-            return true;
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
-void pushNegativeKeysToEnd(Two34TreeNode *treep)
-{
-    Key emptyKey;
-    emptyKey.emptyIt();
-
-    int count = 0;
-
-    for (int i = 0; i < 3; i++)
-        if (!(treep->keys[i] == emptyKey))
-            treep->keys[count++] = treep->keys[i];
-
-    while (count < 3)
-        treep->keys[count++] = emptyKey;
-}
-
-void sortTreeNode(Two34TreeNode *treep)
-{
-    Key emptyKey;
-    emptyKey.emptyIt();
-    for (int i = 1; i < 3; i++)
-    {
-        Key index = treep->keys[i];
-        int j = i;
-        while (j > 0 && index < treep->keys[j - 1])
-        {
-            treep->keys[j] = treep->keys[j - 1];
-            j--;
-        }
-        treep->keys[j] = index;
-    }
-    pushNegativeKeysToEnd(treep);
-}
-
-bool getIndexOfItem(const Two34TreeNode *treep, const Key newKey, int newItemIndex)
-{
-    for (int newItemIndex = 0; newItemIndex < 3; newItemIndex++)
-    {
-        if (treep->keys[newItemIndex] == newKey)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-void addOrCreateKid(Two34TreeNode **treep, Two34TreeNode *left, Two34TreeNode *right, const int index, const Key newKey)
-{
-    int freeIndex = 0;
-    int newItemIndex = 0;
-
-    if ((*treep)->kids[index] == nullptr)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if ((*treep)->kids[i] == nullptr)
-            {
-                cout << "-1 ";
-            }
-            else
-            {
-                cout << (*treep)->kids[i]->keys[0] << " ";
-            }
-        }
-        cout << endl;
-        cout << "there is no tree node at " << index << " " << (*treep)->keys[0] << endl;
-        (*treep)->kids[index] = new Two34TreeNode(newKey, left, right);
-        for (int i = 0; i < 4; i++)
-        {
-            if ((*treep)->kids[i] == nullptr)
-            {
-                cout << "-1 ";
-            }
-            else
-            {
-                cout << (*treep)->kids[i]->keys[0] << " ";
-            }
-        }
-        cout << endl;
-    }
-    else if (treeNodeHasSpace((*treep)->kids[index], freeIndex))
-    {
-        (*treep)->kids[index]->keys[freeIndex] = newKey;
-
-        sortTreeNode((*treep)->kids[index]);
-        if (getIndexOfItem((*treep), newKey, newItemIndex)) // TODO instead of replace, add
-        {
-            cout << "adding " << left->keys[0] << endl;
-            cout << "adding " << right->keys[0] << endl;
-            (*treep)->kids[newItemIndex] = left;
-            (*treep)->kids[newItemIndex + 1] = right;
-        }
-        else
-        {
-            cout << "something else has gone wrong :: addOrCreateKid" << endl;
-        }
-    }
-    else
-    {
-        cout << "something has gone wrong :: addOrCreateKid" << endl;
-    }
-}
-
-void findIndexForKid(Two34TreeNode *treep, const Key newKey, int &index)
-{
-    for (index = 0; index < 3; index++)
-    {
-        if ((newKey < treep->keys[index]))
-        {
-            break;
-        }
-    }
-}
-
-void splitTreeNode(Two34TreeNode **target, Two34TreeNode **parent, bool &changeTarget)
-{
-
-    int freeIndex = 0;
-    int newIndex = 0;
-
-    if (*parent == nullptr)
-    {
-        cout << "splitTreeNode:: parent is a nullptr (root)" << endl;
-        Two34TreeNode *left = (*target)->kids[0];
-        Two34TreeNode *middleLeft = (*target)->kids[1];
-        Two34TreeNode *middleRight = (*target)->kids[2];
-        Two34TreeNode *right = (*target)->kids[3];
-
-        if (left != nullptr)
-            cout << "left: " << left->keys[0] << endl;
-        if (middleLeft != nullptr)
-            cout << "middleLeft: " << middleLeft->keys[0] << endl;
-        if (middleRight != nullptr)
-            cout << "middleRight: " << middleRight->keys[0] << endl;
-        if (right != nullptr)
-            cout << "right: " << right->keys[0] << endl;
-
-        (*target)->kids[0] = new Two34TreeNode((*target)->keys[0], left, middleLeft);
-        (*target)->kids[3] = new Two34TreeNode((*target)->keys[2], middleRight, right);
-
-        (*target)->kids[1] = nullptr;
-        (*target)->kids[2] = nullptr;
-
-        cout << "middle left is nullptr :: " << (middleLeft == nullptr) << endl;
-
-        (*target)->keys[0].emptyIt();
-        (*target)->keys[2].emptyIt();
-        sortTreeNode(*target);
-        changeTarget = true;
-    }
-    else
-    {
-        cout << "splitTreeNode:: parent is not a nullptr: " << (*parent)->keys[0] << endl;
-        if (treeNodeHasSpace(*parent, freeIndex))
-        {
-            (*parent)->keys[freeIndex] = (*target)->keys[1];
-            sortTreeNode(*parent);
-
-            Two34TreeNode *left = (*target)->kids[0];
-            Two34TreeNode *middleLeft = (*target)->kids[1];
-            Two34TreeNode *middleRight = (*target)->kids[2];
-            Two34TreeNode *right = (*target)->kids[3];
-
-            if (left != nullptr)
-                cout << "left: " << left->keys[0] << endl;
-            if (middleLeft != nullptr)
-                cout << "middleLeft: " << middleLeft->keys[0] << endl;
-            if (middleRight != nullptr)
-                cout << "middleRight: " << middleRight->keys[0] << endl;
-            if (right != nullptr)
-                cout << "right: " << right->keys[0] << endl;
-
-            Key leftChild = (*target)->keys[0];
-            Key rightChild = (*target)->keys[2];
-
-            // delete *target;
-            *target = nullptr;
-
-            findIndexForKid(*parent, leftChild, newIndex);
-            addOrCreateKid(parent, middleLeft, left, newIndex, leftChild);
-
-            findIndexForKid(*parent, rightChild, newIndex);
-            addOrCreateKid(parent, middleRight, right, newIndex, rightChild);
-
-            changeTarget = false;
-        }
-        else
-        {
-            cout << "something terrible has happened: splitTreeNode" << endl;
-        }
-    }
-}
-
-bool treeNodeHasNoKids(Two34TreeNode *treep)
+// determines if a tree node is a leaf
+// pre: tree node is not nullptr
+// post: if the tree node has no children true will return
+//      else false
+// usage: if (treeNodeIsLeaf(target)) {cout << "insert!";}
+bool treeNodeIsLeaf(const Two34TreeNode *treep)
 {
     for (int i = 0; i < 4; i++)
     {
@@ -305,6 +153,25 @@ bool treeNodeHasNoKids(Two34TreeNode *treep)
         }
     }
     return true;
+}
+
+// determines what type a tree node is, either 1 node, 2 node or 3 node
+// pre: tree node is not nullptr
+// post: if the child has 1 key, 1 will be returned
+//      2; 2 will be returned
+//      3; 3 will be returned
+// usage: if (treeNodeType(target) == 1) {cout << "is a 1 node!";}
+int treeNodeType(Two34TreeNode *treep)
+{
+    for (int i = 2; i >= 0; i--)
+    {
+        if (!treep->keys[i].isEmpty())
+        {
+            return i + 1;
+        }
+    }
+
+    return 0;
 }
 
 // creates an empty 2-3-4 Tree
@@ -330,72 +197,229 @@ Two34Tree::~Two34Tree()
 // usage: tree.insert(mykey);
 void Two34Tree::insert(const Key &newKey)
 {
-    Key emptyKey;
-    emptyKey.emptyIt();
-    int freeIndex = 0;
-    int nextIndex = 0;
-    bool stop = false;
-    bool swapTarget = true;
-    Two34TreeNode *temp = nullptr;
-    Two34TreeNode **parent = &temp;
-    Two34TreeNode **target = &root;
+    Two34TreeNode *target, *parent;
+    int nodeType = 0;
 
-    while (!stop)
+    if (root == nullptr)
     {
-        cout << "parent is " << (*parent == nullptr ? emptyKey : (*parent)->keys[0]) << endl;
-        cout << "target is " << (*target == nullptr ? emptyKey : (*target)->keys[0]) << endl;
+        root = new Two34TreeNode(newKey);
+    }
+    else
+    {
+        target = root;
+        parent = target;
 
-        if (*parent == nullptr && *target == nullptr)
+        cout << "parent: ";
+        printTreeNode(cout, parent);
+        cout << endl;
+
+        cout << "target: ";
+        printTreeNode(cout, target);
+        cout << endl;
+
+        while (target != nullptr)
         {
-            cout << "adding to root" << endl;
-            (*target) = new Two34TreeNode(newKey);
-            stop = true;
-        }
-        // else if (*parent == nullptr && ) //has no children
-        else if (treeNodeHasNoKids(*target))
-        {
-            if (treeNodeHasSpace(*target, freeIndex))
+            if (treeNodeContainsKey(target, newKey))
             {
-                cout << "node has no children and has space" << endl;
-                (*target)->keys[freeIndex] = newKey;
-                sortTreeNode(*target);
-                stop = true;
+                //duplicate
+                cout << "duplicate" << endl;
+                return;
+            }
+            else if (treeNodeIsFull(target))
+            {
+                cout << "treeNodeIsFull" << endl;
+                nodeType = treeNodeType(parent);
+                //Parent is 1 node;
+                if (nodeType == 1)
+                {
+                    cout << "parent is 1 node" << endl;
+                    if (parent->keys[0] < target->keys[1])
+                    {
+                        parent->keys[1] = target->keys[1];
+                        parent->kids[1] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        parent->kids[2] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    }
+                    else
+                    {
+                        parent->keys[1] = parent->keys[0];
+                        parent->kids[2] = parent->kids[1];
+                        parent->keys[0] = target->keys[1];
+                        parent->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        parent->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    }
+
+                    if (newKey < parent->keys[0])
+                    {
+                        target = parent->kids[0];
+                    }
+                    else if (newKey < parent->keys[1])
+                    {
+                        target = parent->kids[1];
+                    }
+                    else if (parent->keys[1] < newKey)
+                    {
+                        target = parent->kids[2];
+                    }
+                    else
+                    {
+                        //duplicate
+                        cout << "duplicate" << endl;
+                        return;
+                    }
+                }
+                else if (nodeType == 2)
+                {
+                    cout << "parent is 2 node" << endl;
+
+                    if (parent->keys[1] < target->keys[1])
+                    {
+                        parent->keys[2] = target->keys[1];
+                        parent->kids[2] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        parent->kids[3] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    }
+                    else if (parent->keys[0] < target->keys[1])
+                    {
+                        parent->keys[2] = parent->keys[1];
+                        parent->kids[3] = parent->kids[2];
+                        parent->keys[1] = target->keys[1];
+                        parent->kids[1] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        parent->kids[2] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    }
+                    else
+                    {
+                        parent->keys[2] = parent->keys[1];
+                        parent->kids[3] = parent->kids[2];
+                        parent->keys[1] = parent->keys[0];
+                        parent->kids[2] = parent->kids[1];
+                        parent->keys[0] = target->keys[1];
+                        parent->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        parent->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    }
+
+                    if (newKey < parent->keys[0])
+                    {
+                        target = parent->kids[0];
+                    }
+                    else if (newKey < parent->keys[1])
+                    {
+                        target = parent->kids[1];
+                    }
+                    else if (newKey < parent->keys[2])
+                    {
+                        target = parent->kids[2];
+                    }
+                    else if (parent->keys[2] < newKey)
+                    {
+                        target = parent->kids[3];
+                    }
+                    else
+                    {
+                        //duplicate
+                        cout << "duplicate" << endl;
+                        return;
+                    }
+                }
+                else //if root and parent are three, talking about same node therefore influence just the root
+                {
+                    cout << "parent is 3 node" << endl;
+
+                    root = new Two34TreeNode(target->keys[1]);
+                    root->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                    root->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+
+                    parent = root;
+
+                    if (newKey < root->keys[0])
+                    {
+                        target = root->kids[0];
+                    }
+                    else if (root->keys[0] < newKey)
+                    {
+                        target = root->kids[1];
+                    }
+                    else
+                    {
+                        //duplicate
+                        cout << "duplicate" << endl;
+                        return;
+                    }
+                }
+                pretty(cout, root, 0);
+            }
+
+            if (treeNodeIsLeaf(target))
+            {
+                cout << "is a leaf" << endl;
+                nodeType = treeNodeType(target);
+
+                if (nodeType == 1)
+                {
+                    if (target->keys[0] < newKey)
+                    {
+                        target->keys[1] = newKey;
+                        return;
+                    }
+                    else if (newKey < target->keys[0])
+                    {
+                        target->keys[1] = target->keys[0];
+                        target->keys[0] = newKey;
+                        return;
+                    }
+                }
+                else if (nodeType == 2)
+                {
+                    if (target->keys[1] < newKey)
+                    {
+                        target->keys[2] = newKey;
+                        return;
+                    }
+                    else if (target->keys[0] < newKey)
+                    {
+                        target->keys[2] = target->keys[1];
+                        target->keys[1] = newKey;
+                    }
+                    else if (newKey < target->keys[0])
+                    {
+                        target->keys[2] = target->keys[1];
+                        target->keys[1] = target->keys[0];
+                        target->keys[0] = newKey;
+                    }
+                }
             }
             else
             {
+                cout << "not a leaf" << endl;
+                nodeType = treeNodeType(target);
 
-                cout << "node has no children but is full" << endl;
-                splitTreeNode(target, parent, swapTarget);
-                pretty(cout, root, 0);
-                findIndexForKid(*target, newKey, nextIndex);
-                cout << nextIndex << endl;
-                if (swapTarget)
+                parent = target;
+
+                if (nodeType == 1)
                 {
-                    parent = target;
-                    target = &((*target)->kids[nextIndex]);
+                    if (newKey < target->keys[0])
+                    {
+                        target = target->kids[0];
+                    }
+                    else
+                    {
+                        target = target->kids[1];
+                    }
+                }
+                else if (nodeType == 2)
+                {
+                    if (newKey < target->keys[0])
+                    {
+                        target = target->kids[0];
+                    }
+                    else if (newKey < target->keys[1])
+                    {
+                        target = target->kids[1];
+                    }
+                    else
+                    {
+                        target = target->kids[2];
+                    }
                 }
             }
-        }
-        else if (!treeNodeHasSpace(*target, freeIndex))
-        {
-            cout << "node has no children but is full" << endl;
-            splitTreeNode(target, parent, swapTarget);
-            pretty(cout, root, 0);
-            findIndexForKid(*target, newKey, nextIndex);
-            cout << nextIndex << endl;
-            if (swapTarget)
-            {
-                parent = target;
-                target = &((*target)->kids[nextIndex]);
-            }
-        }
-        else
-        {
-            cout << "traverse" << endl;
-            findIndexForKid(*target, newKey, nextIndex);
-            cout << nextIndex << endl;
-            parent = target;
-            target = &((*target)->kids[nextIndex]);
         }
     }
 }

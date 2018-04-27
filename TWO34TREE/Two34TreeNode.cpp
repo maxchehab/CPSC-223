@@ -15,8 +15,17 @@
 
 #include "Two34TreeNode.h"
 
+// Creates empty tree node with empty children
+// pre: space in heap
+// post: empty tree node is created
+// usage: root = new Two34TreeNode ();
 Two34TreeNode::Two34TreeNode()
 {
+    for (int i = 1; i < 3; i++)
+    {
+        keys[i].emptyIt();
+    }
+
     for (int i = 0; i < 4; i++)
     {
         kids[i] = nullptr;
@@ -30,6 +39,11 @@ Two34TreeNode::Two34TreeNode()
 Two34TreeNode::Two34TreeNode(const Key &newKey)
 {
     keys[0] = newKey;
+
+    for (int i = 1; i < 3; i++)
+    {
+        keys[i].emptyIt();
+    }
 
     for (int i = 0; i < 4; i++)
     {
@@ -47,9 +61,9 @@ Two34TreeNode::Two34TreeNode(const Key &newKey, Two34TreeNode *left, Two34TreeNo
     keys[0] = newKey;
 
     kids[0] = left;
-    kids[1] = nullptr;
+    kids[1] = right;
     kids[2] = nullptr;
-    kids[3] = right;
+    kids[3] = nullptr;
 }
 
 // Destroys a node

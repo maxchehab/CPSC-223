@@ -13,6 +13,7 @@
 istream &operator>>(istream &input, Key &rightHandSideKey)
 {
 	input >> rightHandSideKey.phone;
+	rightHandSideKey.empty = false;
 
 	char enter;
 	input.get(enter);
@@ -35,6 +36,7 @@ ostream &operator<<(ostream &output, const Key &rightHandSideKey)
 Key::Key()
 {
 	phone = -1;
+	empty = true;
 }
 
 //creates a specific phone number
@@ -44,6 +46,7 @@ Key::Key()
 Key::Key(int keyInteger)
 {
 	phone = keyInteger;
+	empty = false;
 }
 
 //releases memory for a phone number
@@ -65,6 +68,7 @@ Key &Key::operator=(const Key &rightHandSideKey)
 	{
 		phone = rightHandSideKey.phone;
 	}
+	empty = false;
 	return *this;
 }
 
@@ -92,5 +96,10 @@ bool Key::operator<(const Key &rightHandSideKey) const
 // usage: myKey.emptyIt();
 void Key::emptyIt()
 {
-	phone = -1;
+	empty = true;
+}
+
+const bool Key::isEmpty()
+{
+	return empty;
 }
