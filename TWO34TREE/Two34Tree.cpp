@@ -83,23 +83,6 @@ void pretty(ostream &output, Two34TreeNode *treep, int level)
     }
 }
 
-//TODO delete
-void printTreeNode(ostream &output, Two34TreeNode *treep)
-{
-    if (treep == nullptr)
-    {
-        output << "[ null ]" << endl;
-        return;
-    }
-
-    output << "[ ";
-    for (int i = 0; i < 3; i++)
-    {
-        output << treep->keys[i] << " ";
-    }
-    output << "]";
-}
-
 // determines if a tree node contains a key.
 //      useful for detecting duplicates.
 // pre: tree node is not nullptr, key is not empty
@@ -195,57 +178,67 @@ Two34Tree::~Two34Tree()
 // post: newKey is placed in the appropriately sorted
 //       position in the 2-3-4 tree object
 // usage: tree.insert(mykey);
-void Two34Tree::insert(const Key &newKey)
+void Two34Tree::insert(const Key &newKey) throw(Exception)
 {
     Two34TreeNode *target, *parent;
     int nodeType = 0;
 
     if (root == nullptr)
     {
-        root = new Two34TreeNode(newKey);
+        root = new (nothrow) Two34TreeNode(newKey);
+        if (root == nullptr)
+        {
+            throw Exception("Insert :: no room in the heap");
+        }
     }
     else
     {
         target = root;
         parent = target;
 
-        cout << "parent: ";
-        printTreeNode(cout, parent);
-        cout << endl;
-
-        cout << "target: ";
-        printTreeNode(cout, target);
-        cout << endl;
-
         while (target != nullptr)
         {
             if (treeNodeContainsKey(target, newKey))
             {
-                //duplicate
-                cout << "duplicate" << endl;
-                return;
+                throw Exception("Insert :: no duplicates");
             }
             else if (treeNodeIsFull(target))
             {
-                cout << "treeNodeIsFull" << endl;
+                // cout << "treeNodeIsFull" << endl;
                 nodeType = treeNodeType(parent);
                 //Parent is 1 node;
                 if (nodeType == 1)
                 {
-                    cout << "parent is 1 node" << endl;
+                    // cout << "parent is 1 node" << endl;
                     if (parent->keys[0] < target->keys[1])
                     {
                         parent->keys[1] = target->keys[1];
-                        parent->kids[1] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                        parent->kids[2] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        parent->kids[1] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        if (parent->kids[1] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
+                        parent->kids[2] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        if (parent->kids[2] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
                     }
                     else
                     {
                         parent->keys[1] = parent->keys[0];
                         parent->kids[2] = parent->kids[1];
                         parent->keys[0] = target->keys[1];
-                        parent->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                        parent->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        parent->kids[0] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        if (parent->kids[0] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
+                        parent->kids[1] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        if (parent->kids[1] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
                     }
 
                     if (newKey < parent->keys[0])
@@ -262,28 +255,42 @@ void Two34Tree::insert(const Key &newKey)
                     }
                     else
                     {
-                        //duplicate
-                        cout << "duplicate" << endl;
-                        return;
+                        throw Exception("Insert :: no duplicates");
                     }
                 }
                 else if (nodeType == 2)
                 {
-                    cout << "parent is 2 node" << endl;
+                    // cout << "parent is 2 node" << endl;
 
                     if (parent->keys[1] < target->keys[1])
                     {
                         parent->keys[2] = target->keys[1];
-                        parent->kids[2] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                        parent->kids[3] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        parent->kids[2] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        if (parent->kids[2] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
+                        parent->kids[3] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        if (parent->kids[3] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
                     }
                     else if (parent->keys[0] < target->keys[1])
                     {
                         parent->keys[2] = parent->keys[1];
                         parent->kids[3] = parent->kids[2];
                         parent->keys[1] = target->keys[1];
-                        parent->kids[1] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                        parent->kids[2] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        parent->kids[1] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        if (parent->kids[1] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
+                        parent->kids[2] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        if (parent->kids[2] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
                     }
                     else
                     {
@@ -292,8 +299,16 @@ void Two34Tree::insert(const Key &newKey)
                         parent->keys[1] = parent->keys[0];
                         parent->kids[2] = parent->kids[1];
                         parent->keys[0] = target->keys[1];
-                        parent->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                        parent->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        parent->kids[0] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                        if (parent->kids[0] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
+                        parent->kids[1] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                        if (parent->kids[1] == nullptr)
+                        {
+                            throw Exception("Insert :: no room in the heap");
+                        }
                     }
 
                     if (newKey < parent->keys[0])
@@ -314,18 +329,28 @@ void Two34Tree::insert(const Key &newKey)
                     }
                     else
                     {
-                        //duplicate
-                        cout << "duplicate" << endl;
-                        return;
+                        throw Exception("Insert :: no duplicates");
                     }
                 }
                 else //if root and parent are three, talking about same node therefore influence just the root
                 {
-                    cout << "parent is 3 node" << endl;
+                    // cout << "parent is 3 node" << endl;
 
                     root = new Two34TreeNode(target->keys[1]);
-                    root->kids[0] = new Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
-                    root->kids[1] = new Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    if (root == nullptr)
+                    {
+                        throw Exception("Insert :: no room in the heap");
+                    }
+                    root->kids[0] = new (nothrow) Two34TreeNode(target->keys[0], target->kids[0], target->kids[1]);
+                    if (root->kids[0] == nullptr)
+                    {
+                        throw Exception("Insert :: no room in the heap");
+                    }
+                    root->kids[1] = new (nothrow) Two34TreeNode(target->keys[2], target->kids[2], target->kids[3]);
+                    if (root->kids[1] == nullptr)
+                    {
+                        throw Exception("Insert :: no room in the heap");
+                    }
 
                     parent = root;
 
@@ -339,17 +364,15 @@ void Two34Tree::insert(const Key &newKey)
                     }
                     else
                     {
-                        //duplicate
-                        cout << "duplicate" << endl;
-                        return;
+                        throw Exception("Insert :: no duplicates");
                     }
                 }
-                pretty(cout, root, 0);
+                // pretty(cout, root, 0);
             }
 
             if (treeNodeIsLeaf(target))
             {
-                cout << "is a leaf" << endl;
+                // cout << "is a leaf" << endl;
                 nodeType = treeNodeType(target);
 
                 if (nodeType == 1)
@@ -388,7 +411,7 @@ void Two34Tree::insert(const Key &newKey)
             }
             else
             {
-                cout << "not a leaf" << endl;
+                // cout << "not a leaf" << endl;
                 nodeType = treeNodeType(target);
 
                 parent = target;

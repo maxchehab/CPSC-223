@@ -27,8 +27,8 @@ string printGreen(const string input)
 //prints an exception message
 //pre except has been thrown
 //post except is printed to the screen with two newlines before and after
-//usage PrintExceptionMessage(except);
-void PrintExceptionMessage(const Exception &except)
+//usage printExceptionMessage(except);
+void printExceptionMessage(const Exception &except)
 {
     cout << printRed(except.What()) << endl;
 }
@@ -38,8 +38,8 @@ void PrintExceptionMessage(const Exception &except)
 //post if filename exists in the same directory as the program, it is opened
 //      with its file pointer at the beginning of the file
 //      else an error message is printed
-//usage OpenInputFile(infile, filename);
-void OpenInputFile(ifstream &inputFile, string filename)
+//usage openInputFile(infile, filename);
+void openInputFile(ifstream &inputFile, string filename)
 {
     inputFile.open(filename);
     if (inputFile.fail())
@@ -54,8 +54,8 @@ void OpenInputFile(ifstream &inputFile, string filename)
 //post if filename exists in the same directory as the program, it is opened
 //      with its file pointer at the beginning of the file
 //      else an error message is printed
-//usage OpenInputFile(outfile, filename);
-void OpenOutputFile(ofstream &outputFile, string filename)
+//usage openInputFile(outfile, filename);
+void openOutputFile(ofstream &outputFile, string filename)
 {
     outputFile.open(filename);
     if (outputFile.fail())
@@ -70,12 +70,26 @@ int main()
     Two34Tree tree;
     Key newKey;
 
-    while (true)
-    {
-        cout << printGreen("key> ");
-        cin >> newKey;
+    // while (true)
+    // {
+    //     cout << printGreen("key> ");
+    //     cin >> newKey;
 
-        tree.insert(newKey);
-        tree.display(cout, 'p');
+    //     try
+    //     {
+    //         tree.insert(newKey);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         printExceptionMessage(ex);
+    //     }
+    //     tree.display(cout, 'p');
+    // }
+
+    for (int i = 1; i < 101; i++)
+    {
+        // newKey = Key(i);
+        tree.insert(Key(i));
     }
+    tree.display(cout, 'p');
 }
