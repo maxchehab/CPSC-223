@@ -59,27 +59,29 @@ void inorder(ostream &output, Two34TreeNode *treep)
 // usage: pretty (output, mroot, 1);
 void pretty(ostream &output, Two34TreeNode *treep, int level)
 {
-    Key emptyKey;
-    emptyKey.emptyIt();
     if (treep != nullptr)
     {
-        for (int i = 0; i < level; i++)
-        {
-            output << "\t";
-        }
-        output << "[ ";
+        pretty(output, treep->kids[3], level + 1);
+        pretty(output, treep->kids[2], level + 1);
+		for (int i = 0; i < level; i++)
+		{
+			output << "\t";
+		}
+		output << "[ ";
         for (int i = 0; i < 3; i++)
         {
-            if (!(treep->keys[i] == emptyKey))
+            if (!(treep->keys[i].isEmpty()))
             {
                 output << treep->keys[i] << " ";
             }
         }
         output << "]" << endl;
-        for (int i = 3; i >= 0; i--)
-        {
-            pretty(output, treep->kids[i], level + 1);
-        }
+        pretty(output, treep->kids[1], level + 1);
+        pretty(output, treep->kids[0], level + 1);
+		if (treep->kids[0] != nullptr)
+		{
+			output << endl;
+		}
     }
 }
 
@@ -204,12 +206,12 @@ void Two34Tree::insert(const Key &newKey) throw(Exception)
             }
             else if (treeNodeIsFull(target))
             {
-                // cout << "treeNodeIsFull" << endl;
+               // cout << "treeNodeIsFull" << endl;
                 nodeType = treeNodeType(parent);
                 //Parent is 1 node;
                 if (nodeType == 1)
                 {
-                    // cout << "parent is 1 node" << endl;
+                   // cout << "parent is 1 node" << endl;
                     if (parent->keys[0] < target->keys[1])
                     {
                         parent->keys[1] = target->keys[1];
@@ -260,7 +262,7 @@ void Two34Tree::insert(const Key &newKey) throw(Exception)
                 }
                 else if (nodeType == 2)
                 {
-                    // cout << "parent is 2 node" << endl;
+                   // cout << "parent is 2 node" << endl;
 
                     if (parent->keys[1] < target->keys[1])
                     {
@@ -334,7 +336,7 @@ void Two34Tree::insert(const Key &newKey) throw(Exception)
                 }
                 else //if root and parent are three, talking about same node therefore influence just the root
                 {
-                    // cout << "parent is 3 node" << endl;
+                   // cout << "parent is 3 node" << endl;
 
                     root = new Two34TreeNode(target->keys[1]);
                     if (root == nullptr)
@@ -367,16 +369,17 @@ void Two34Tree::insert(const Key &newKey) throw(Exception)
                         throw Exception("Insert :: no duplicates");
                     }
                 }
-                // pretty(cout, root, 0);
+              //  pretty(cout, root, 0);
             }
 
             if (treeNodeIsLeaf(target))
             {
-                // cout << "is a leaf" << endl;
+                //cout << "is a leaf" << endl;
                 nodeType = treeNodeType(target);
 
                 if (nodeType == 1)
                 {
+					//cout << "node is one node" << endl;
                     if (target->keys[0] < newKey)
                     {
                         target->keys[1] = newKey;
@@ -391,27 +394,32 @@ void Two34Tree::insert(const Key &newKey) throw(Exception)
                 }
                 else if (nodeType == 2)
                 {
+					//cout << "node is two node" << endl;
                     if (target->keys[1] < newKey)
                     {
+						//cout << "placing in index 2" << endl;
                         target->keys[2] = newKey;
                         return;
                     }
                     else if (target->keys[0] < newKey)
                     {
-                        target->keys[2] = target->keys[1];
+						target->keys[2] = target->keys[1];
                         target->keys[1] = newKey;
-                    }
+						return;
+					}
                     else if (newKey < target->keys[0])
                     {
+						//cout << "placing in index 0" << endl;
                         target->keys[2] = target->keys[1];
                         target->keys[1] = target->keys[0];
                         target->keys[0] = newKey;
+						return;
                     }
                 }
             }
             else
             {
-                // cout << "not a leaf" << endl;
+               // cout << "not a leaf" << endl;
                 nodeType = treeNodeType(target);
 
                 parent = target;
